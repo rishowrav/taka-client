@@ -1,4 +1,5 @@
 import React from "react";
+import Taka from "/assets/images/taka.png";
 
 const Dashboard = () => {
   return (
@@ -6,17 +7,18 @@ const Dashboard = () => {
       {/* sidebar menu */}
       <aside class="ml-[-100%] fixed z-10 top-0 pb-3 px-6 w-full flex flex-col justify-between h-screen border-r bg-white transition duration-300 md:w-4/12 lg:ml-0 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]">
         <div>
-          <div class="-mx-6 px-6 py-4">
+          <div class="-mx-6 px-6 py-4 flex items-center">
             <a href="#" title="home">
-              <img
-                src="https://tailus.io/sources/blocks/stats-cards/preview/images/logo.svg"
-                class="w-32"
-                alt="tailus logo"
-              />
+              <img src={Taka} class="w-16" alt="tailus logo" />
             </a>
+            <span className="text-3xl merienda-800 font-semibold text-gray-700">
+              {" "}
+              Taka.com
+            </span>
           </div>
+          <hr />
 
-          <div class="mt-8 text-center">
+          <div class="mt-4 text-center">
             <img
               src="https://tailus.io/sources/blocks/stats-cards/preview/images/second_user.webp"
               alt=""
@@ -28,7 +30,9 @@ const Dashboard = () => {
             <span class="hidden text-gray-400 lg:block">Admin</span>
           </div>
 
-          <ul class="space-y-2 tracking-wide mt-8">
+          <hr />
+
+          <ul class="space-y-2 tracking-wide mt-4">
             <li>
               <a
                 href="#"
@@ -153,7 +157,7 @@ const Dashboard = () => {
           </ul>
         </div>
 
-        <div class="px-6 -mx-6 pt-4 flex justify-between items-center border-t">
+        <div class="px-6 -mx-6 pt-2 flex justify-between items-center border-t">
           <button class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -198,9 +202,9 @@ const Dashboard = () => {
               </svg>
             </button>
             <div class="flex space-x-4">
-              <div hidden class="md:block">
-                <div class="relative flex items-center text-gray-400 focus-within:text-cyan-400">
-                  <span class="absolute left-4 h-6 flex items-center pr-3 border-r border-gray-300">
+              <div hidden class="md:block  ">
+                <div class="relative flex items-center  text-gray-400  focus-within:text-cyan-400">
+                  <span class="absolute left-4 h-6 flex items-center  pr-3 border-r border-gray-300">
                     <svg
                       xmlns="http://ww50w3.org/2000/svg"
                       class="w-4 fill-current"
@@ -218,7 +222,7 @@ const Dashboard = () => {
                     name="leadingIcon"
                     id="leadingIcon"
                     placeholder="Search here"
-                    class="w-full pl-14 pr-4 py-2.5 rounded-xl text-sm text-gray-600 outline-none border border-gray-300 focus:border-cyan-300 transition"
+                    class="w-full bg-white pl-14 pr-4 py-2.5 rounded-xl text-sm text-gray-600 outline-none border border-gray-300 focus:border-cyan-300 transition"
                   />
                 </div>
               </div>

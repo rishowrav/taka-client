@@ -3,13 +3,25 @@ import Taka from "/assets/images/taka.png";
 import { Link } from "react-router-dom";
 
 const Registration = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const name = e.target.name.value;
+    const email = e.target.email.value;
+    const phone = e.target.phone.value;
+    const role = e.target.role.value;
+    const pin = e.target.pin.value;
+
+    console.table({ name, email, phone, role, pin });
+  };
+
   return (
     <div className="flex h-screen w-full items-center bg-[url(https://images.unsplash.com/photo-1499123785106-343e69e68db1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1748&q=80)] justify-center bg-gray-900 bg-cover bg-no-repeat">
       <div className="rounded-xl bg-gray-800 bg-opacity-50 px-16 pt-0 pb-4 shadow-lg backdrop-blur-md max-sm:px-8">
         <div className="text-white">
           <div className="mb-8 flex flex-col items-center">
-            <img src={Taka} width="150" alt="" srcset="" />
-            <h1 className="mb-2 text-2xl">Taka.com</h1>
+            <img src={Taka} width="150" alt="" />
+            <h1 className="mb-2 text-2xl merienda-800">Taka.com</h1>
             <span className="text-gray-300 text-sm">
               Already have an account!{" "}
               <Link className="text-[#F59108] font-bold underline" to="/">
@@ -18,7 +30,7 @@ const Registration = () => {
             </span>
           </div>
 
-          <form action="#">
+          <form action="#" onSubmit={handleSubmit}>
             {/* Name input */}
             <div className="mb-4 text-lg">
               <input
@@ -52,15 +64,16 @@ const Registration = () => {
             {/* Status input */}
             <div className="mb-4 text-lg">
               <select
+                defaultValue={"select role"}
                 name="role"
                 className="select text-lg select-bordered w-full  rounded-3xl border-none bg-yellow-400 bg-opacity-50 px-6 py-2 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md"
               >
                 <option
                   disabled
-                  selected
+                  value="select role"
                   className="bg-[#A78A28] text-slate-200 hover:bg-[#F9AF46]"
                 >
-                  Role
+                  Select Role
                 </option>
                 <option className="bg-[#A78A28] hover:bg-[#F9AF46]">
                   User
@@ -84,7 +97,7 @@ const Registration = () => {
                 type="submit"
                 className="rounded-3xl bg-yellow-400 bg-opacity-50 px-10 py-2 text-white shadow-xl backdrop-blur-md transition-colors duration-300 hover:bg-yellow-600"
               >
-                Login
+                Register
               </button>
             </div>
           </form>
