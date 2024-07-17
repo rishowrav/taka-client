@@ -5,12 +5,12 @@ import { Link } from "react-router-dom";
 const Login = () => {
   return (
     <div className="flex h-screen w-full items-center bg-[url(https://images.unsplash.com/photo-1499123785106-343e69e68db1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1748&q=80)] justify-center bg-gray-900 bg-cover bg-no-repeat">
-      <div className="rounded-xl bg-gray-800 bg-opacity-50 px-16 py-10 shadow-lg backdrop-blur-md max-sm:px-8">
+      <div className="rounded-xl bg-gray-800 bg-opacity-50 px-16 py-6 shadow-lg backdrop-blur-md max-sm:px-8">
         <div className="text-white">
           <div className="mb-8 flex flex-col items-center">
             <img src={Taka} width="150" alt="" srcset="" />
             <h1 className="mb-2 text-2xl">Taka.com</h1>
-            <span className="text-gray-300">
+            <span className="text-gray-300 text-sm">
               Don't have an account yet?{" "}
               <Link
                 className="text-[#F59108] font-bold underline"
