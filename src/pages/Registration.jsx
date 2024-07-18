@@ -1,9 +1,17 @@
 import React from "react";
 import Taka from "/assets/images/taka.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import useAxiosPublic from "../hooks/useAxiosPublic";
+import toast from "react-hot-toast";
+import useAuth from "../hooks/useAuth";
 
 const Registration = () => {
-  const handleSubmit = (e) => {
+  const axiosPublic = useAxiosPublic();
+  const { setCurrentUser, currentUser } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const name = e.target.name.value;
@@ -12,7 +20,25 @@ const Registration = () => {
     const role = e.target.role.value;
     const pin = e.target.pin.value;
 
+    const registerData = { name, email, phone, role, pin };
+
     console.table({ name, email, phone, role, pin });
+
+    try {
+      const { data } = await axiosPublic.post("/users", registerData);
+      if (data.insertedId) {
+        console.log(data);
+        setCurrentUser(registerData);
+        navigate("/dashboard");
+        localStorage.setItem("user", JSON.stringify(registerData));
+        toast.success("Registered your Account");
+      } else {
+        toast.error("Registered Failed");
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error("Registered Failed");
+    }
   };
 
   return (
@@ -21,7 +47,9 @@ const Registration = () => {
         <div className="text-white">
           <div className="mb-8 flex flex-col items-center">
             <img src={Taka} width="150" alt="" />
-            <h1 className="mb-2 text-2xl merienda-800">Taka.com</h1>
+            <h1 className="mb-2 text-2xl merienda-800">{`${
+              currentUser ? currentUser.name : "Taka.com"
+            }`}</h1>
             <span className="text-gray-300 text-sm">
               Already have an account!{" "}
               <Link className="text-[#F59108] font-bold underline" to="/">
@@ -34,7 +62,8 @@ const Registration = () => {
             {/* Name input */}
             <div className="mb-4 text-lg">
               <input
-                className="rounded-3xl border-none bg-yellow-400 bg-opacity-50 px-6 py-2 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md"
+                required
+                className="rounded-3xl w-full border-none bg-yellow-400 bg-opacity-50 px-6 py-2 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md"
                 type="text"
                 name="name"
                 placeholder="Name"
@@ -44,7 +73,8 @@ const Registration = () => {
             {/* Email input */}
             <div className="mb-4 text-lg">
               <input
-                className="rounded-3xl border-none bg-yellow-400 bg-opacity-50 px-6 py-2 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md"
+                required
+                className="rounded-3xl w-full border-none bg-yellow-400 bg-opacity-50 px-6 py-2 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md"
                 type="text"
                 name="email"
                 placeholder="Email Address"
@@ -54,7 +84,8 @@ const Registration = () => {
             {/* Phone Number input */}
             <div className="mb-4 text-lg">
               <input
-                className="rounded-3xl border-none bg-yellow-400 bg-opacity-50 px-6 py-2 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md"
+                required
+                className="rounded-3xl w-full border-none bg-yellow-400 bg-opacity-50 px-6 py-2 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md"
                 type="text"
                 name="phone"
                 placeholder="Phone Number"
@@ -64,6 +95,7 @@ const Registration = () => {
             {/* Status input */}
             <div className="mb-4 text-lg">
               <select
+                required
                 defaultValue={"select role"}
                 name="role"
                 className="select text-lg select-bordered w-full  rounded-3xl border-none bg-yellow-400 bg-opacity-50 px-6 py-2 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md"
@@ -86,7 +118,8 @@ const Registration = () => {
 
             <div className="mb-4 text-lg">
               <input
-                className="rounded-3xl border-none bg-yellow-400 bg-opacity-50 px-6 py-2 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md"
+                required
+                className="rounded-3xl w-full border-none bg-yellow-400 bg-opacity-50 px-6 py-2 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md"
                 type="Password"
                 name="pin"
                 placeholder="PIN"

@@ -1,15 +1,38 @@
-import React from "react";
 import Taka from "/assets/images/taka.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import useAxiosPublic from "../hooks/useAxiosPublic";
+import toast from "react-hot-toast";
+import useAuth from "../hooks/useAuth";
 
 const Login = () => {
-  const handleSubmit = (e) => {
+  const axiosPublic = useAxiosPublic();
+  const { setCurrentUser, currentUser } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const emailOrPhone = e.target.emailOrPhone.value;
     const pin = e.target.pin.value;
 
-    console.table({ emailOrPhone, pin });
+    const loginData = { emailOrPhone, pin };
+
+    console.table(loginData);
+
+    try {
+      const { data } = await axiosPublic.post("/user", loginData);
+      if (data) {
+        setCurrentUser(data);
+        navigate("/dashboard");
+        toast.success("successfully login");
+        localStorage.setItem("user", JSON.stringify(data));
+      } else {
+        toast.error("login failed");
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error("login failed");
+    }
   };
 
   return (
@@ -18,7 +41,9 @@ const Login = () => {
         <div className="text-white">
           <div className="mb-8 flex flex-col items-center">
             <img src={Taka} width="150" alt="" />
-            <h1 className="mb-2 text-2xl merienda-800">Taka.com</h1>
+            <h1 className="mb-2 text-2xl merienda-800">{`${
+              currentUser ? currentUser.name : "Taka.com"
+            }`}</h1>
             <span className="text-gray-300 text-sm">
               Don't have an account yet?{" "}
               <Link
@@ -32,7 +57,8 @@ const Login = () => {
           <form action="#" onSubmit={handleSubmit}>
             <div className="mb-4 text-lg">
               <input
-                className="rounded-3xl border-none bg-yellow-400 bg-opacity-50 px-6 py-2 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md"
+                required
+                className="rounded-3xl w-full border-none bg-yellow-400 bg-opacity-50 px-6 py-2 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md"
                 type="text"
                 name="emailOrPhone"
                 placeholder="Email or Phone Number"
@@ -41,7 +67,8 @@ const Login = () => {
 
             <div className="mb-4 text-lg">
               <input
-                className="rounded-3xl border-none bg-yellow-400 bg-opacity-50 px-6 py-2 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md"
+                required
+                className="rounded-3xl w-full border-none bg-yellow-400 bg-opacity-50 px-6 py-2 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md"
                 type="Password"
                 name="pin"
                 placeholder="PIN"
