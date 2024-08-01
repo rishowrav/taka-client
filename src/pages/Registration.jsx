@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import Taka from "/assets/images/taka.png";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import useAxiosPublic from "../hooks/useAxiosPublic";
 import toast from "react-hot-toast";
 import useAuth from "../hooks/useAuth";
@@ -10,34 +9,39 @@ const Registration = () => {
   const axiosPublic = useAxiosPublic();
   const { setCurrentUser, currentUser } = useAuth();
   const navigate = useNavigate();
+  const [rLoading, setRLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setRLoading(true);
     const name = e.target.name.value;
     const email = e.target.email.value;
     const phone = e.target.phone.value;
     const role = e.target.role.value;
     const pin = e.target.pin.value;
 
-    const registerData = { name, email, phone, role, pin };
-
-    console.table({ name, email, phone, role, pin });
+    const registerData = { name, email, phone, role, pin, status: "pending" };
 
     try {
       const { data } = await axiosPublic.post("/users", registerData);
       if (data.insertedId) {
         console.log(data);
         setCurrentUser(registerData);
+
         navigate("/dashboard");
         localStorage.setItem("user", JSON.stringify(registerData));
+        axiosPublic.post("/jwt", registerData);
         toast.success("Registered your Account");
+        setRLoading(false);
       } else {
         toast.error("Registered Failed");
+        setRLoading(false);
       }
     } catch (err) {
       console.log(err);
+
       toast.error("Registered Failed");
+      setRLoading(false);
     }
   };
 
@@ -127,10 +131,11 @@ const Registration = () => {
             </div>
             <div className="mt-8 flex justify-center text-lg text-black">
               <button
+                disabled={rLoading}
                 type="submit"
-                className="rounded-3xl bg-yellow-400 bg-opacity-50 px-10 py-2 text-white shadow-xl backdrop-blur-md transition-colors duration-300 hover:bg-yellow-600"
+                className="rounded-3xl disabled:bg-gray-700 disabled:text-black bg-yellow-400 bg-opacity-50 px-10 py-2 text-white shadow-xl backdrop-blur-md transition-colors duration-300 hover:bg-yellow-600"
               >
-                Register
+                {`${rLoading ? "loading.." : "Register"}  `}
               </button>
             </div>
           </form>

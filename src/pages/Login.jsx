@@ -3,14 +3,17 @@ import { Link, useNavigate } from "react-router-dom";
 import useAxiosPublic from "../hooks/useAxiosPublic";
 import toast from "react-hot-toast";
 import useAuth from "../hooks/useAuth";
+import { useState } from "react";
 
 const Login = () => {
   const axiosPublic = useAxiosPublic();
   const { setCurrentUser, currentUser } = useAuth();
   const navigate = useNavigate();
+  const [logLoading, setLogLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLogLoading(true);
 
     const emailOrPhone = e.target.emailOrPhone.value;
     const pin = e.target.pin.value;
@@ -26,12 +29,16 @@ const Login = () => {
         navigate("/dashboard");
         toast.success("successfully login");
         localStorage.setItem("user", JSON.stringify(data));
+        axiosPublic.post("/jwt", data);
+        setLogLoading(false);
       } else {
         toast.error("login failed");
+        setLogLoading(false);
       }
     } catch (err) {
       console.log(err);
       toast.error("login failed");
+      setLogLoading(false);
     }
   };
 
@@ -76,10 +83,11 @@ const Login = () => {
             </div>
             <div className="mt-8 flex justify-center text-lg text-black">
               <button
+                disabled={logLoading}
                 type="submit"
-                className="rounded-3xl bg-yellow-400 bg-opacity-50 px-10 py-2 text-white shadow-xl backdrop-blur-md transition-colors duration-300 hover:bg-yellow-600"
+                className="rounded-3xl disabled:bg-gray-700 disabled:text-black bg-yellow-400 bg-opacity-50 px-10 py-2 text-white shadow-xl backdrop-blur-md transition-colors duration-300 hover:bg-yellow-600"
               >
-                Login
+                {`${logLoading ? "loading.." : "Login"}  `}
               </button>
             </div>
           </form>

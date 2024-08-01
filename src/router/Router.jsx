@@ -1,8 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
-import Dashboard from "../pages/Dashboard";
 import Login from "../pages/Login";
 import Registration from "../pages/Registration";
 import PrivateRoute from "./PrivateRoute";
+import DashboardLayout from "../layout/DashboardLayout";
+import UserDashboard from "../pages/UserDashboard";
+import TransactionsHistory from "../pages/TransactionsHistory";
 
 export const router = createBrowserRouter([
   {
@@ -17,13 +19,17 @@ export const router = createBrowserRouter([
     path: "/dashboard",
     element: (
       <PrivateRoute>
-        <Dashboard />
+        <DashboardLayout />
       </PrivateRoute>
     ),
     children: [
       {
-        path: "/dashboard/profile",
-        element: <div>Profile</div>,
+        index: true,
+        element: <UserDashboard />,
+      },
+      {
+        path: "/dashboard/transactions-history",
+        element: <TransactionsHistory />,
       },
     ],
   },
